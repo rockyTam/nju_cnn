@@ -1,3 +1,5 @@
+package localLucene;
+
 import com.mongodb.*;
 import com.google.gson.Gson;
 import org.apache.lucene.analysis.Analyzer;
@@ -63,28 +65,21 @@ public class IndexRepositoryForMongo {
             String name  = law1.getLname();
             String time = law1.getLtime();
             String catogery = law1.getLcatagory();
-            if (!isRepeat(law1.getLname())){
-                // 创建一个Document对象
-                Document document = new Document();
+            // 创建一个Document对象
+            Document document = new Document();
                 // 向Document对象中添加域信息
                 // 参数：1、域的名称；2、域的值；3、是否存储；
-                System.out.println(name);
-                Field nameField = new TextField("name", name , Field.Store.YES);
-                Field timeField = new TextField("time", time , Field.Store.YES);
-                Field catogeryField = new TextField("catogery", catogery , Field.Store.YES);
+            System.out.println(name);
+            Field nameField = new TextField("name", name , Field.Store.YES);
+            Field timeField = new TextField("time", time , Field.Store.YES);
+            Field catogeryField = new TextField("catogery", catogery , Field.Store.YES);
 
                 // 将域添加到document对象中
-                document.add(nameField);
-                document.add(timeField);
-                document.add(catogeryField);
+            document.add(nameField);
+            document.add(timeField);
+            document.add(catogeryField);
                 // 将信息写入到索引库中
-                indexWriter.addDocument(document);
-            }
-            else {
-                System.out.println("已经存在"+name);
-                continue;
-            }
-
+            indexWriter.addDocument(document);
 
         }
         // 关闭indexWriter

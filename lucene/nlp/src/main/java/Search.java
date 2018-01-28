@@ -12,6 +12,7 @@ import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.sandbox.queries.DuplicateFilter;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TermQuery;
@@ -19,7 +20,7 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
-
+import org.apache.lucene.sandbox.*;
 import javax.management.Query;
 
 public class Search {
@@ -32,11 +33,21 @@ public class Search {
         // 创建一个IndexSearcher对象
         IndexSearcher indexSearcher = new IndexSearcher(indexReader);
         // 创建一个查询对象
+        String field="中国人民银行\n" +
+                "\n" +
+                " 关于小额贷款公司试点的指导意见";
         QueryParser parser = new QueryParser("name",new StandardAnalyzer());
+
         try {
-            org.apache.lucene.search.Query query1 = parser.parse("卫生部办公厅关于进一步做好传染性非典型肺炎诊疗工作的通知");
+//            DuplicateFilter filter=new DuplicateFilter(field);
+            System.out.println(field.length());
+//            if (field.length()<=7){
+//                field = "中华人民共和国"+field;
+//
+//            }
+            org.apache.lucene.search.Query query1 = parser.parse(field);
             System.out.println("");
-            TopDocs topDocs1 = indexSearcher.search(query1, 15);
+            TopDocs topDocs1 = indexSearcher.search(query1, 30);
             System.out.println("可能有关联的查询结果数：" + topDocs1.totalHits);
             System.out.println("=======================");
             ScoreDoc[] scoreDocs = topDocs1.scoreDocs;
